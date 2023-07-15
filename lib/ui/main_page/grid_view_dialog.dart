@@ -18,7 +18,9 @@ class GridViewDialog extends StatefulWidget {
 }
 
 class _GridViewDialogState extends State<GridViewDialog> {
-  TextEditingController controller = TextEditingController();
+  TextEditingController controllerTitle = TextEditingController();
+  TextEditingController controllerComment = TextEditingController();
+
   bool chech = false;
   bool? isWatched;
   int? rate;
@@ -40,12 +42,31 @@ class _GridViewDialogState extends State<GridViewDialog> {
     return list;
   }
 
+  String _createComment() {
+    if (rate == 1) {
+      return "Really bad";
+    }
+    if (rate == 2) {
+      return "Not so bad";
+    }
+    if (rate == 3) {
+      return "Something for everyone";
+    }
+    if (rate == 4) {
+      return "Good. Really good.";
+    }
+    if (rate == 5) {
+      return "That was amazing!";
+    }
+    return "COMMENT ERROR";
+  }
+
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<FilmListBloc>(context);
 
-    if(controller.text.isEmpty && chech == false){
-      controller.text = widget.data.title;
+    if (controllerTitle.text.isEmpty && chech == false) {
+      controllerTitle.text = widget.data.title;
       chech = true;
     }
     isWatched ??= widget.data.isWatched;
@@ -58,7 +79,7 @@ class _GridViewDialogState extends State<GridViewDialog> {
         children: [
           TextField(
             decoration: const InputDecoration(labelText: "Enter Title name"),
-            controller: controller,
+            controller: controllerTitle,
             onChanged: (value) {
               setState(() {});
             },
@@ -77,8 +98,18 @@ class _GridViewDialogState extends State<GridViewDialog> {
             ],
           ),
           isWatched == true
-              ? Row(
-                  children: _createRate(),
+              ? Column(
+                  children: [
+                    Row(
+                      children: _createRate(),
+                    ),
+                    TextField(
+                      decoration: const InputDecoration(
+                        labelText: "Comment your feeling!",
+                      ),
+                      controller: controllerComment,
+                    ),
+                  ],
                 )
               : const SizedBox(),
           Row(
@@ -97,7 +128,7 @@ class _GridViewDialogState extends State<GridViewDialog> {
                 icon: const Icon(Icons.delete),
               ),
               IconButton(
-                onPressed: controller.text.isEmpty
+                onPressed: controllerTitle.text.isEmpty
                     ? null
                     : () {
                         bloc.add(
@@ -105,12 +136,15 @@ class _GridViewDialogState extends State<GridViewDialog> {
                               editData: HiveItemType(
                                 index: widget.index,
                                 isWatched: isWatched!,
-                                title: controller.text,
+                                title: controllerTitle.text,
                                 rate: rate!,
                                 createTime: widget.data.createTime,
                                 watchedTime: widget.data.isWatched == true
                                     ? widget.data.watchedTime
                                     : DateTime.now(),
+                                comment: controllerComment.text.isNotEmpty
+                                    ? controllerComment.text
+                                    : _createComment(),
                               ),
                               index: widget.index),
                         );

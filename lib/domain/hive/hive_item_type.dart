@@ -23,6 +23,9 @@ class HiveItemType{
   @HiveField(5)
   DateTime watchedTime;
 
+  @HiveField(6)
+  String comment;
+
   HiveItemType({
     required this.index,
     required this.isWatched,
@@ -30,5 +33,6 @@ class HiveItemType{
     required this.rate,
     required this.createTime,
     required this.watchedTime,
+    required this.comment
   });
 }

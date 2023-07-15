@@ -23,13 +23,14 @@ class HiveItemTypeAdapter extends TypeAdapter<HiveItemType> {
       rate: fields[3] as int,
       createTime: fields[4] as DateTime,
       watchedTime: fields[5] as DateTime,
+      comment: fields[6] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, HiveItemType obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.index)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class HiveItemTypeAdapter extends TypeAdapter<HiveItemType> {
       ..writeByte(4)
       ..write(obj.createTime)
       ..writeByte(5)
-      ..write(obj.watchedTime);
+      ..write(obj.watchedTime)
+      ..writeByte(6)
+      ..write(obj.comment);
   }
 
   @override

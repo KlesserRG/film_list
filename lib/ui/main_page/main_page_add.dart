@@ -13,6 +13,7 @@ class MainPageAdd extends StatefulWidget {
 
 class _MainPageAddState extends State<MainPageAdd> {
   String? title;
+  TextEditingController controllerComment = TextEditingController();
   bool isWatched = false;
   int rate = 1;
   List<IconButton> _createRate() {
@@ -31,6 +32,25 @@ class _MainPageAddState extends State<MainPageAdd> {
       );
     }
     return list;
+  }
+
+  String _createComment() {
+    if (rate == 1) {
+      return "Really bad";
+    }
+    if (rate == 2) {
+      return "Not so bad";
+    }
+    if (rate == 3) {
+      return "Something for everyone";
+    }
+    if (rate == 4) {
+      return "Good. Really good.";
+    }
+    if (rate == 5) {
+      return "That was amazing!";
+    }
+    return "COMMENT ERROR";
   }
 
   @override
@@ -64,8 +84,18 @@ class _MainPageAddState extends State<MainPageAdd> {
             ],
           ),
           isWatched == true
-              ? Row(
-                  children: _createRate(),
+              ? Column(
+                  children: [
+                    Row(
+                      children: _createRate(),
+                    ),
+                    TextField(
+                      decoration: const InputDecoration(
+                        labelText: "Your Opinion",
+                      ),
+                      controller: controllerComment,
+                    )
+                  ],
                 )
               : const SizedBox(),
           IconButton(
@@ -81,6 +111,9 @@ class _MainPageAddState extends State<MainPageAdd> {
                           rate: rate,
                           createTime: DateTime.now(),
                           watchedTime: DateTime.now(),
+                          comment: controllerComment.text.isNotEmpty
+                              ? controllerComment.text
+                              : _createComment(),
                         ),
                       ),
                     );

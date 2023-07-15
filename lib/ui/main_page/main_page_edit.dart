@@ -13,10 +13,11 @@ class MainPageEdit extends StatefulWidget {
 }
 
 class _MainPageEditState extends State<MainPageEdit> {
-  TextEditingController controller = TextEditingController();
+  TextEditingController controllerTitle = TextEditingController();
+  TextEditingController controllerComment = TextEditingController();
 
-  String? title;
   bool isWatched = false;
+  bool firstStart = true;
   int rate = 1;
   List<IconButton> _createRate() {
     List<IconButton> list = [];
@@ -39,6 +40,10 @@ class _MainPageEditState extends State<MainPageEdit> {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<FilmListBloc>(context);
+    if (firstStart) {
+      controllerTitle.text = widget.data.title;
+      controllerComment.text = widget.data.comment;
+    }
     return AlertDialog(
       title: const Text("Edit current"),
       content: Column(
@@ -47,11 +52,11 @@ class _MainPageEditState extends State<MainPageEdit> {
         children: [
           TextField(
             decoration: const InputDecoration(labelText: "Enter Title name"),
-            // controller: controller,
-            onChanged: (text) {
-              title = text;
-              setState(() {});
-            },
+            controller: controllerTitle,
+            // onChanged: (text) {
+            //   title = text;
+            //   setState(() {});
+            // },
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -67,12 +72,22 @@ class _MainPageEditState extends State<MainPageEdit> {
             ],
           ),
           isWatched == true
-              ? Row(
-                  children: _createRate(),
+              ? Column(
+                  children: [
+                    Row(
+                      children: _createRate(),
+                    ),
+                    TextField(
+                      decoration: const InputDecoration(
+                        labelText: "Your Opinion",
+                      ),
+                      controller: controllerComment,
+                    )
+                  ],
                 )
               : const SizedBox(),
           IconButton(
-            onPressed: title == null
+            onPressed: controllerTitle.text.isEmpty
                 ? null
                 : () {
                     bloc.add(
@@ -81,12 +96,15 @@ class _MainPageEditState extends State<MainPageEdit> {
                         editData: HiveItemType(
                           index: widget.data.index,
                           isWatched: isWatched,
-                          title: title!,
+                          title: controllerTitle.text,
                           rate: rate,
                           createTime: widget.data.createTime,
                           watchedTime: widget.data.isWatched == true
-                                    ? widget.data.watchedTime
-                                    : DateTime.now(),
+                              ? widget.data.watchedTime
+                              : DateTime.now(),
+                          comment: controllerComment.text.isNotEmpty
+                              ? controllerComment.text
+                              : widget.data.comment,
                         ),
                       ),
                     );
