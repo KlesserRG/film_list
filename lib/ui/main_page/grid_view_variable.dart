@@ -13,17 +13,23 @@ class GridViewVariable extends StatelessWidget {
   Widget build(BuildContext context) {
     int length = data.length;
     return SliverGrid.builder(
-      itemBuilder: (context, index) => Padding(
-        padding: const EdgeInsets.all(16),
-        child: GridViewItem(
-          index: length - index - 1,
-          data: data[length - index - 1],
-        ),
-      ),
+      itemBuilder: (context, index) => index < data.length
+          ? Padding(
+              padding: const EdgeInsets.all(16),
+              child: GridViewItem(
+                index: length - index - 1,
+                data: data[length - index - 1],
+              ),
+            )
+          : Container(
+            color: Colors.transparent,
+            height: 0.0,
+            alignment: Alignment.center,
+          ),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
       ),
-      itemCount: data.length,
+      itemCount: data.length % 2 == 0 ? data.length + 2 : data.length + 3,
     );
   }
 }
@@ -56,18 +62,20 @@ class GridViewItem extends StatelessWidget {
         );
       },
       child: Card(
-        shape: RoundedRectangleBorder(
-            side: const BorderSide(), borderRadius: BorderRadius.circular(16)),
+        color: Colors.transparent,
         child: Column(
           children: [
-            const Icon(Icons.abc),
-            const Spacer(),
-            const Divider(color: Colors.black),
-            Text(data.title),
+            const SizedBox(height: 8),
+            Text(data.title, maxLines: 1),
             data.isWatched == true
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: stars(),
+                ? Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: stars(),
+                      ),
+                      Text(data.comment),
+                    ],
                   )
                 : const Text("Не просмотрено"),
             const SizedBox(height: 16),

@@ -10,13 +10,30 @@ class ListViewVariable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int length = data.length;
+    // return SliverGrid.builder(
+    //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    //     crossAxisCount: 1,
+    //   ),
+    //   itemBuilder: (context, index) => ListViewItem(
+    //     data: data[index],
+    //     index: index,
+    //   ),
+    //   itemCount: data.length - 1,
+    // );
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-        (context, index) => ListViewItem(
-          data: data[length - index - 1],
-          index: length - index - 1,
-        ),
-        childCount: data.length,
+        (context, index) => index < data.length
+            ? ListViewItem(
+                data: data[length - index - 1],
+                index: length - index - 1,
+              )
+            : Container(
+                color: Colors.transparent,
+                height: 80,
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.center,
+              ),
+        childCount: data.length < 10 ? 10 : data.length + 1,
       ),
     );
   }
@@ -36,7 +53,9 @@ class ListViewItem extends StatelessWidget {
     List<Widget> output = [];
     for (int i = 1; i <= 5; i++) {
       i <= data.rate
-          ? output.add(const Icon(Icons.star))
+          ? output.add(
+              const Icon(Icons.star),
+            )
           : output.add(const Icon(Icons.star_border));
       output.add(const SizedBox(width: 8));
     }
@@ -45,37 +64,56 @@ class ListViewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      // leading: Icon(data.isWatched == true ? Icons.done : Icons.close),
-      title: Text(data.title),
-      subtitle: data.isWatched == true
-          ? Row(
-              children: stars(),
-            )
-          : const Text("Not watched yet"),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
+    return SizedBox(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => MainPageEdit(
-                    data: data,
-                    index: index,
-                  ),
-                );
-              },
-              icon: const Icon(Icons.edit)),
-          IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) =>
-                      MainPageDelete(data: data, index: index),
-                );
-              },
-              icon: const Icon(Icons.delete)),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: data.isWatched
+                    ? [
+                        Text(data.title, style: const TextStyle(fontSize: 16)),
+                        Row(children: stars()),
+                        Text(data.comment)
+                      ]
+                    : [
+                        Text(data.title, style: const TextStyle(fontSize: 16)),
+                        const Text("Not watched yet",
+                            style: TextStyle(fontSize: 16)),
+                      ],
+              ),
+            ),
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => MainPageEdit(
+                      data: data,
+                      index: index,
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.edit),
+              ),
+              IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) =>
+                        MainPageDelete(data: data, index: index),
+                  );
+                },
+                icon: const Icon(Icons.delete),
+              ),
+            ],
+          )
         ],
       ),
     );

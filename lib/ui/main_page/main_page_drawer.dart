@@ -16,13 +16,13 @@ class MainPageDrawer extends StatelessWidget {
               const Text("Menu", style: TextStyle(fontSize: 24)),
               TextButton.icon(
                 onPressed: () {},
-                icon: Icon(Icons.star),
-                label: Text("The best", style: TextStyle(fontSize: 24)),
+                icon: const Icon(Icons.star),
+                label: const Text("The best", style: TextStyle(fontSize: 24)),
               ),
               TextButton.icon(
                 onPressed: () {},
-                icon: Icon(Icons.star),
-                label: Text("The best", style: TextStyle(fontSize: 24)),
+                icon: const Icon(Icons.star),
+                label: const Text("The best", style: TextStyle(fontSize: 24)),
               ),
             ],
           ),
