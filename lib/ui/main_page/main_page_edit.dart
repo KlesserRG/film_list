@@ -1,4 +1,4 @@
-import 'package:film_list/domain/bloc/film_list_bloc.dart';
+import 'package:film_list/domain/bloc/film_list/film_list_bloc.dart';
 import 'package:film_list/domain/hive/hive_item_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,10 +53,6 @@ class _MainPageEditState extends State<MainPageEdit> {
           TextField(
             decoration: const InputDecoration(labelText: "Enter Title name"),
             controller: controllerTitle,
-            // onChanged: (text) {
-            //   title = text;
-            //   setState(() {});
-            // },
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,

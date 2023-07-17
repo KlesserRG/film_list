@@ -1,4 +1,4 @@
-import 'package:film_list/domain/bloc/film_list_bloc.dart';
+import 'package:film_list/domain/bloc/film_list/film_list_bloc.dart';
 import 'package:film_list/domain/hive/hive_item_type.dart';
 import 'package:film_list/ui/main_page/main_page_delete.dart';
 import 'package:flutter/material.dart';
