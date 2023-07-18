@@ -14,15 +14,18 @@ class GridViewVariable extends StatelessWidget {
     int length = data.length;
     return SliverGrid.builder(
       itemBuilder: (context, index) => index < data.length
-          ? Padding(
-              padding: const EdgeInsets.all(16),
-              child: GridViewItem(
-                index: length - index - 1,
-                data: data[length - index - 1],
+          ? ColorFiltered(
+            colorFilter: ColorFilter.mode(Theme.of(context).canvasColor, BlendMode.srcOut),
+            child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: GridViewItem(
+                  index: length - index - 1,
+                  data: data[length - index - 1],
+                ),
               ),
-            )
+          )
           : Container(
-            color: Colors.transparent,
+            color: Theme.of(context).canvasColor,
             height: 0.0,
             alignment: Alignment.center,
           ),

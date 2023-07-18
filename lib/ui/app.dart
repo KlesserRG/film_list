@@ -1,5 +1,4 @@
 import 'package:film_list/domain/bloc/film_list/film_list_bloc.dart';
-import 'package:film_list/domain/bloc/film_searcher/film_searcher_bloc.dart';
 import 'package:film_list/ui/main_page/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,9 +13,6 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => FilmListBloc()..add(const FilmListLoad()),
         ),
-        BlocProvider(
-          create: (context) => FilmSearcherBloc()..add(const FilmSearcherLoadEvent()),
-        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

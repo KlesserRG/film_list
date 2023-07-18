@@ -10,25 +10,21 @@ class ListViewVariable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int length = data.length;
-    // return SliverGrid.builder(
-    //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-    //     crossAxisCount: 1,
-    //   ),
-    //   itemBuilder: (context, index) => ListViewItem(
-    //     data: data[index],
-    //     index: index,
-    //   ),
-    //   itemCount: data.length - 1,
-    // );
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) => index < data.length
-            ? ListViewItem(
-                data: data[length - index - 1],
-                index: length - index - 1,
+            ? ColorFiltered(
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).canvasColor,
+                  BlendMode.srcOut,
+                ),
+                child: ListViewItem(
+                  data: data[length - index - 1],
+                  index: length - index - 1,
+                ),
               )
             : Container(
-                color: Colors.transparent,
+                color: Theme.of(context).canvasColor,
                 height: 80,
                 width: MediaQuery.of(context).size.width,
                 alignment: Alignment.center,
@@ -64,7 +60,8 @@ class ListViewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      decoration: BoxDecoration(border: Border.all(color: Colors.transparent)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
